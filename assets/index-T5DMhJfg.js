@@ -4545,46 +4545,40 @@ return orthographicDepthToViewZ(depth,cameraNear,cameraFar);
 	`),r.uvTransformation?(i=`vec2 transformedUv = vUv;
 `+i,r.defines.set("UV","transformedUv")):r.defines.set("UV","vUv"),r.shaderParts.set(mi.FRAGMENT_HEAD,t),r.shaderParts.set(mi.FRAGMENT_MAIN_IMAGE,n),r.shaderParts.set(mi.FRAGMENT_MAIN_UV,i);for(const[l,c]of r.shaderParts)c!==null&&r.shaderParts.set(l,c.trim().replace(/^#/,`
 #`));this.skipRendering=e===0,this.needsSwap=!this.skipRendering,this.fullscreenMaterial.setShaderData(r)}recompile(){this.updateMaterial()}getDepthTexture(){return this.fullscreenMaterial.depthBuffer}setDepthTexture(r,e=Fc){this.fullscreenMaterial.depthBuffer=r,this.fullscreenMaterial.depthPacking=e;for(const t of this.effects)t.setDepthTexture(r,e)}render(r,e,t,n,i){for(const s of this.effects)s.update(r,e,n);if(!this.skipRendering||this.renderToScreen){const s=this.fullscreenMaterial;s.inputBuffer=e.texture,s.time+=n*this.timeScale,r.setRenderTarget(this.renderToScreen?null:t),r.render(this.scene,this.camera)}}setSize(r,e){this.fullscreenMaterial.setSize(r,e);for(const t of this.effects)t.setSize(r,e)}initialize(r,e,t){this.renderer=r;for(const n of this.effects)n.initialize(r,e,t);this.updateMaterial(),t!==void 0&&t!==ba&&(this.fullscreenMaterial.defines.FRAMEBUFFER_PRECISION_HIGH="1")}dispose(){super.dispose();for(const r of this.effects)r.removeEventListener("change",this.listener),r.dispose()}handleEvent(r){r.type==="change"&&this.recompile()}},sI=class extends Ws{constructor(r,e,{renderTarget:t,resolutionScale:n=1,width:i=ts.AUTO_SIZE,height:s=ts.AUTO_SIZE,resolutionX:l=i,resolutionY:c=s}={}){super("NormalPass"),this.needsSwap=!1,this.renderPass=new NA(r,e,new gS);const d=this.renderPass;d.ignoreBackground=!0,d.skipShadowMapUpdate=!0;const p=d.getClearPass();p.overrideClearColor=new zt(7829503),p.overrideClearAlpha=1,this.renderTarget=t,this.renderTarget===void 0&&(this.renderTarget=new Gi(1,1,{minFilter:Yi,magFilter:Yi}),this.renderTarget.texture.name="NormalPass.Target");const v=this.resolution=new ts(this,l,c,n);v.addEventListener("change",y=>this.setSize(v.baseWidth,v.baseHeight))}set mainScene(r){this.renderPass.mainScene=r}set mainCamera(r){this.renderPass.mainCamera=r}get texture(){return this.renderTarget.texture}getTexture(){return this.renderTarget.texture}getResolution(){return this.resolution}getResolutionScale(){return this.resolution.scale}setResolutionScale(r){this.resolution.scale=r}render(r,e,t,n,i){const s=this.renderToScreen?null:this.renderTarget;this.renderPass.render(r,s,s)}setSize(r,e){const t=this.resolution;t.setBaseSize(r,e),this.renderTarget.setSize(t.width,t.height)}};function km(r,e,t){return e in r?Object.defineProperty(r,e,{value:t,enumerable:!0,configurable:!0,writable:!0}):r[e]=t,r}new $e;new $e;function LA(r,e){if(!(r instanceof e))throw new TypeError("Cannot call a class as a function")}var Bo=function r(e,t,n){var i=this;LA(this,r),km(this,"dot2",function(s,l){return i.x*s+i.y*l}),km(this,"dot3",function(s,l,c){return i.x*s+i.y*l+i.z*c}),this.x=e,this.y=t,this.z=n},oI=[new Bo(1,1,0),new Bo(-1,1,0),new Bo(1,-1,0),new Bo(-1,-1,0),new Bo(1,0,1),new Bo(-1,0,1),new Bo(1,0,-1),new Bo(-1,0,-1),new Bo(0,1,1),new Bo(0,-1,1),new Bo(0,1,-1),new Bo(0,-1,-1)],tE=[151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180],nE=new Array(512),iE=new Array(512),lI=function(e){e>0&&e<1&&(e*=65536),e=Math.floor(e),e<256&&(e|=e<<8);for(var t=0;t<256;t++){var n;t&1?n=tE[t]^e&255:n=tE[t]^e>>8&255,nE[t]=nE[t+256]=n,iE[t]=iE[t+256]=oI[n%12]}};lI(0);function uI(r){if(typeof r=="number")r=Math.abs(r);else if(typeof r=="string"){var e=r;r=0;for(var t=0;t<e.length;t++)r=(r+(t+1)*(e.charCodeAt(t)%96))%2147483647}return r===0&&(r=311),r}function aE(r){var e=uI(r);return function(){var t=e*48271%2147483647;return e=t,t/2147483647}}var cI=function r(e){var t=this;LA(this,r),km(this,"seed",0),km(this,"init",function(n){t.seed=n,t.value=aE(n)}),km(this,"value",aE(this.seed)),this.init(e)};new cI(Math.random());const fI=mt.createContext(null),rE=r=>(r.getAttributes()&2)===2,hI=mt.memo(mt.forwardRef(({children:r,camera:e,scene:t,resolutionScale:n,enabled:i=!0,renderPriority:s=1,autoClear:l=!0,depthBuffer:c,enableNormalPass:d,stencilBuffer:p,multisampling:v=8,frameBufferType:y=Xs},_)=>{const{gl:x,scene:E,camera:C,size:A}=Wa(),T=t||E,U=e||C,[O,N,I]=mt.useMemo(()=>{const W=new Jz(x,{depthBuffer:c,stencilBuffer:p,multisampling:v,frameBufferType:y});W.addPass(new NA(T,U));let P=null,D=null;return d&&(D=new sI(T,U),D.enabled=!1,W.addPass(D),n!==void 0&&(P=new eI({normalBuffer:D.texture,resolutionScale:n}),P.enabled=!1,W.addPass(P))),[W,D,P]},[U,x,c,p,v,y,T,d,n]);mt.useEffect(()=>O?.setSize(A.width,A.height),[O,A]),kc((W,P)=>{if(i){const D=x.autoClear;x.autoClear=l,p&&!l&&x.clearStencil(),O.render(P),x.autoClear=D}},i?s:0);const F=mt.useRef(null);mt.useLayoutEffect(()=>{const W=[],P=F.current.__r3f;if(P&&O){const D=P.children;for(let j=0;j<D.length;j++){const q=D[j].object;if(q instanceof F1){const K=[q];if(!rE(q)){let ue=null;for(;(ue=D[j+1]?.object)instanceof F1&&!rE(ue);)K.push(ue),j++}const ie=new rI(U,...K);W.push(ie)}else q instanceof Ws&&W.push(q)}for(const j of W)O?.addPass(j);N&&(N.enabled=!0),I&&(I.enabled=!0)}return()=>{for(const D of W)O?.removePass(D);N&&(N.enabled=!1),I&&(I.enabled=!1)}},[O,r,U,N,I]),mt.useEffect(()=>{const W=x.toneMapping;return x.toneMapping=uo,()=>{x.toneMapping=W}},[x]);const H=mt.useMemo(()=>({composer:O,normalPass:N,downSamplingPass:I,resolutionScale:n,camera:U,scene:T}),[O,N,I,n,U,T]);return mt.useImperativeHandle(_,()=>O,[O]),kt.jsx(fI.Provider,{value:H,children:kt.jsx("group",{ref:F,children:r})})}));let dI=0;const sE=new WeakMap,pI=(r,e)=>function({blendFunction:t=e?.blendFunction,opacity:n=e?.opacity,...i}){let s=sE.get(r);if(!s){const d=`@react-three/postprocessing/${r.name}-${dI++}`;OS({[d]:r}),sE.set(r,s=d)}const l=Wa(d=>d.camera),c=cE.useMemo(()=>[...e?.args??[],...i.args??[{...e,...i}]],[JSON.stringify(i)]);return kt.jsx(s,{camera:l,"blendMode-blendFunction":t,"blendMode-opacity-value":n,...i,args:c})},mI=pI(KP,{blendFunction:0}),vI=`
-  varying vec2 vUv;
+  precision highp float;
   varying float vHighlight;
   uniform float uTime;
   
   void main() {
-    vUv = uv;
-    
-    // Create a pulse effect along the line
-    float pulse = sin(position.y * 5.0 - uTime * 3.0) * 0.5 + 0.5;
-    vHighlight = pulse;
+    vHighlight = sin(position.y * 5.0 - uTime * 3.0) * 0.5 + 0.5;
     
     vec3 pos = position;
-    // Add some subtle vibration/sparkle
-    pos.x += sin(uTime * 10.0 + pos.y) * 0.01;
-    pos.z += cos(uTime * 10.0 + pos.y) * 0.01;
+    pos.x += sin(uTime * 5.0 + pos.y) * 0.02;
+    pos.z += cos(uTime * 5.0 + pos.y) * 0.02;
     
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = 4.0 * (1.0 / -mvPosition.z);
+    
+    // Adjusted point size for better mobile visibility
+    gl_PointSize = 12.0 * (1.0 / -mvPosition.z);
   }
 `,gI=`
-  varying vec2 vUv;
+  precision highp float;
   varying float vHighlight;
-  uniform float uTime;
   
   void main() {
-    // Golden color palette
-    vec3 colorA = vec3(1.0, 0.8, 0.4); // Light gold
-    vec3 colorB = vec3(1.0, 0.6, 0.0); // Deep gold
+    vec3 colorA = vec3(1.0, 0.9, 0.5); // Golden
+    vec3 colorB = vec3(1.0, 0.6, 0.1); // Deep gold
     
     vec3 finalColor = mix(colorB, colorA, vHighlight);
+    float alpha = 0.4 + vHighlight * 0.6;
     
-    // Add intensity based on highlight
-    float alpha = 0.6 + vHighlight * 0.4;
-    
-    // Soft circle for points
+    // Create a fuzzy circular point
     float dist = distance(gl_PointCoord, vec2(0.5));
     if (dist > 0.5) discard;
     
-    gl_FragColor = vec4(finalColor, alpha);
+    float strength = (1.0 - dist * 2.0);
+    gl_FragColor = vec4(finalColor, alpha * strength);
   }
 `,yI=()=>{const r=mt.useRef(null),{points:e}=mt.useMemo(()=>{const n=[];for(let d=0;d<2400;d++){const p=d/2400,v=p*Math.PI*2*12,y=(1-p)*3,_=Math.cos(v)*y,x=Math.sin(v)*y,E=p*7;if(n.push(_,E,x),Math.random()>.8){const C=(Math.random()-.5)*.5;n.push(_+C,E+(Math.random()-.5)*.2,x+C)}}return{points:new Float32Array(n)}},[]),t=mt.useMemo(()=>({uTime:{value:0}}),[]);return kc(n=>{r.current&&(r.current.material.uniforms.uTime.value=n.clock.elapsedTime)}),kt.jsxs("group",{children:[kt.jsxs("points",{ref:r,children:[kt.jsx("bufferGeometry",{children:kt.jsx("bufferAttribute",{attach:"attributes-position",count:e.length/3,array:e,itemSize:3,args:[e,3]})}),kt.jsx("shaderMaterial",{vertexShader:vI,fragmentShader:gI,uniforms:t,transparent:!0,blending:Xm,depthWrite:!1})]}),kt.jsx("mesh",{})]})},_I=`
   varying vec2 vUv;
