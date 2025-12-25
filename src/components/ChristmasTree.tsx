@@ -3,48 +3,42 @@ import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 
 const VERTEX_SHADER = `
-  varying vec2 vUv;
+  precision highp float;
   varying float vHighlight;
   uniform float uTime;
   
   void main() {
-    vUv = uv;
-    
-    // Create a pulse effect along the line
-    float pulse = sin(position.y * 5.0 - uTime * 3.0) * 0.5 + 0.5;
-    vHighlight = pulse;
+    vHighlight = sin(position.y * 5.0 - uTime * 3.0) * 0.5 + 0.5;
     
     vec3 pos = position;
-    // Add some subtle vibration/sparkle
-    pos.x += sin(uTime * 10.0 + pos.y) * 0.01;
-    pos.z += cos(uTime * 10.0 + pos.y) * 0.01;
+    pos.x += sin(uTime * 5.0 + pos.y) * 0.02;
+    pos.z += cos(uTime * 5.0 + pos.y) * 0.02;
     
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = 4.0 * (1.0 / -mvPosition.z);
+    
+    // Adjusted point size for better mobile visibility
+    gl_PointSize = 12.0 * (1.0 / -mvPosition.z);
   }
 `
 
 const FRAGMENT_SHADER = `
-  varying vec2 vUv;
+  precision highp float;
   varying float vHighlight;
-  uniform float uTime;
   
   void main() {
-    // Golden color palette
-    vec3 colorA = vec3(1.0, 0.8, 0.4); // Light gold
-    vec3 colorB = vec3(1.0, 0.6, 0.0); // Deep gold
+    vec3 colorA = vec3(1.0, 0.9, 0.5); // Golden
+    vec3 colorB = vec3(1.0, 0.6, 0.1); // Deep gold
     
     vec3 finalColor = mix(colorB, colorA, vHighlight);
+    float alpha = 0.4 + vHighlight * 0.6;
     
-    // Add intensity based on highlight
-    float alpha = 0.6 + vHighlight * 0.4;
-    
-    // Soft circle for points
+    // Create a fuzzy circular point
     float dist = distance(gl_PointCoord, vec2(0.5));
     if (dist > 0.5) discard;
     
-    gl_FragColor = vec4(finalColor, alpha);
+    float strength = (1.0 - dist * 2.0);
+    gl_FragColor = vec4(finalColor, alpha * strength);
   }
 `
 

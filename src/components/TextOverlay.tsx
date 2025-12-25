@@ -9,8 +9,6 @@ const TextOverlay = () => {
                     color="#FFD700"
                     anchorX="center"
                     anchorY="middle"
-                    // Using a serif font to match the elegant style
-                    font="https://fonts.gstatic.com/s/playball/v17/p9X9276q9E16C976_S_Z.woff"
                 >
                     Merry\nChristmas
                     <meshStandardMaterial metalness={0.8} roughness={0.2} emissive="#FFD700" emissiveIntensity={0.5} />

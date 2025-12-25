@@ -48,16 +48,24 @@ const HandController = ({ onRotate, onActive }: HandControllerProps) => {
         hands.onResults(onResults)
 
         if (webcamRef.current && webcamRef.current.video) {
-            const camera = new cam.Camera(webcamRef.current.video, {
-                onFrame: async () => {
-                    if (webcamRef.current?.video) {
-                        await hands.send({ image: webcamRef.current.video })
-                    }
-                },
-                width: 640,
-                height: 480
-            })
-            camera.start()
+            try {
+                const camera = new cam.Camera(webcamRef.current.video, {
+                    onFrame: async () => {
+                        if (webcamRef.current?.video) {
+                            try {
+                                await hands.send({ image: webcamRef.current.video })
+                            } catch (e) {
+                                console.warn("Hands send error:", e)
+                            }
+                        }
+                    },
+                    width: 640,
+                    height: 480
+                })
+                camera.start().catch((e: Error) => console.warn("Camera start failed:", e))
+            } catch (err) {
+                console.warn("Camera initialization failed:", err)
+            }
         }
 
         return () => {
