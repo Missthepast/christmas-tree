@@ -22,8 +22,9 @@ const Experience = ({ rotation }: ExperienceProps) => {
 
     return (
         <group>
-            <ambientLight intensity={0.2} />
-            <spotLight position={[10, 10, 10]} intensity={1} castShadow />
+            <ambientLight intensity={0.5} />
+            <spotLight position={[10, 10, 10]} intensity={1.5} castShadow />
+            <pointLight position={[-5, 5, -5]} intensity={0.5} color="#4444ff" />
 
             <group ref={groupRef}>
                 <ChristmasTree />
@@ -32,13 +33,6 @@ const Experience = ({ rotation }: ExperienceProps) => {
 
             <Ground />
             <TextOverlay />
-
-            {/* Background soft particles */}
-            <points>
-                <bufferGeometry>
-                    {/* We'll add some star-like particles here */}
-                </bufferGeometry>
-            </points>
         </group>
     )
 }
